@@ -1,60 +1,17 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b12">
-  <title>OrionOS</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      min-height: 100vh; display: grid; place-items: center; overflow: hidden;
-      background: #080b12; color: #f4f7ff;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    body.midnight { background: #060d1c; }
-    .boot-screen { text-align: center; padding: 24px; }
-    .logo { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 700; letter-spacing: .22em; }
-    .subtitle { margin-top: 14px; color: #8490a8; font-size: .75rem; letter-spacing: .35em; }
-    .welcome { margin-top: 34px; color: #aab6cc; font-size: 14px; }
-    .version { position: fixed; bottom: 24px; color: #586174; font-size: .75rem; }
-  </style>
-  <script>
-    const STORAGE_KEY = "orionos.configuration.v1";
-
-    // Tryb formatowania: /?format=1 usuwa konfigurację i uruchamia kreator od nowa.
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("format") === "1") {
-      localStorage.removeItem(STORAGE_KEY);
-      window.location.replace("configuration/");
-    } else {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) {
-        window.location.replace("configuration/");
-      }
-    }
-  </script>
-</head>
-<body>
-  <main class="boot-screen">
-    <h1 class="logo">ORIONOS</h1>
-    <p class="subtitle">OPERATING SYSTEM</p>
-    <p class="welcome" id="welcome"></p>
-  </main>
-  <footer class="version">Development Preview | v0.2</footer>
-  <script>
-    try {
-      const config = JSON.parse(localStorage.getItem("orionos.configuration.v1") || "null");
-      if (config) {
-        document.body.classList.toggle("midnight", config.appearance === "midnight");
-        document.getElementById("welcome").textContent =
-          (config.language === "en" ? "Welcome, " : "Witaj, ") + config.username;
-        document.documentElement.lang = config.language || "pl";
-      }
-    } catch (error) {
-      localStorage.removeItem("orionos.configuration.v1");
-      window.location.replace("configuration/");
-    }
-  </script>
-</body>
-</html>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080d1b"><title>OrionOS</title>
+<style>
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}body{display:grid;place-items:center;overflow:hidden;background:#080d1b;color:#f4f6ff;font-family:Inter,"Segoe UI",system-ui,sans-serif}.boot{text-align:center;padding:25px}.logo{font-size:clamp(38px,8vw,64px);font-weight:750;letter-spacing:.2em}.sub{margin-top:12px;color:#8e9ab4;font-size:11px;letter-spacing:.35em}.hello{margin-top:32px;color:#b4bfd5;font-size:14px}.version{position:fixed;bottom:22px;color:#68748d;font-size:10px}
+</style>
+<script>
+const KEY="orionos.configuration.v1",INSTALL="orionos.installation.v1";
+const params=new URLSearchParams(location.search);
+if(params.get("format")==="1"){localStorage.removeItem(KEY);localStorage.removeItem(INSTALL);location.replace("configuration/");}
+else{let config=localStorage.getItem(KEY),installed=localStorage.getItem(INSTALL);if(!config)location.replace("configuration/");else{try{if(!JSON.parse(installed||"null")?.complete)location.replace("install.html");}catch(e){location.replace("install.html");}}}
+</script></head>
+<body><main class="boot"><h1 class="logo">ORIONOS</h1><p class="sub">OPERATING SYSTEM</p><p class="hello" id="hello"></p></main><footer class="version">Development Preview | v0.4</footer>
+<script>
+try{const c=JSON.parse(localStorage.getItem("orionos.configuration.v1")||"null");if(c){document.documentElement.lang=c.language||"pl";let themes={dark:"#080d1b",midnight:"#050a1a",light:"#e9edf7",ocean:"#061522",forest:"#071711",rose:"#1a0c18"};document.body.style.background=themes[c.appearance]||themes.dark;document.body.style.color=c.appearance==="light"?"#18213a":"#f4f6ff";document.getElementById("hello").textContent=(c.language==="en"?"Welcome, ":"Witaj, ")+(c.username||"");}}catch(e){localStorage.removeItem("orionos.configuration.v1");location.replace("configuration/");}
+</script></body></html>
