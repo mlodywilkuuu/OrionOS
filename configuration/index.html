@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b12">
+  <title>Konfiguracja OrionOS</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh; display: grid; place-items: center; padding: 24px;
+      background: #080b12; color: #f4f7ff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .panel {
+      width: min(100%, 480px); padding: 38px; border: 1px solid #202a3d;
+      border-radius: 18px; background: #0d1320;
+      box-shadow: 0 24px 80px #0008;
+    }
+    .eyebrow { color: #7e8ca8; font-size: 11px; letter-spacing: .28em; }
+    h1 { margin: 14px 0 8px; font-size: 30px; letter-spacing: .08em; }
+    .intro { color: #929db2; line-height: 1.6; font-size: 14px; margin-bottom: 30px; }
+    label { display: block; margin: 20px 0 9px; color: #cbd4e5; font-size: 13px; }
+    input, select {
+      width: 100%; padding: 13px 14px; border: 1px solid #29364d;
+      border-radius: 9px; outline: none; background: #080e19; color: #f4f7ff;
+      font-size: 15px;
+    }
+    input:focus, select:focus { border-color: #7298ff; }
+    button {
+      width: 100%; margin-top: 28px; padding: 14px; border: 0;
+      border-radius: 9px; background: #dce6ff; color: #101827;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    button:hover { background: #fff; }
+    .foot { margin-top: 22px; text-align: center; color: #59667d; font-size: 11px; }
+    @media (max-width: 480px) { .panel { padding: 27px 22px; } }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <p class="eyebrow">ORIONOS · FIRST START</p>
+    <h1>Konfiguracja systemu</h1>
+    <p class="intro">Witaj w OrionOS. To jednorazowa konfiguracja początkowa. Zapisane ustawienia pozostaną na tym urządzeniu także po odświeżeniu strony.</p>
+
+    <form id="setup-form">
+      <label for="username">Nazwa użytkownika</label>
+      <input id="username" name="username" maxlength="24" placeholder="np. Orion" required autocomplete="nickname">
+
+      <label for="language">Język systemu</label>
+      <select id="language" name="language">
+        <option value="pl">Polski</option>
+        <option value="en">English</option>
+      </select>
+
+      <label for="appearance">Wygląd</label>
+      <select id="appearance" name="appearance">
+        <option value="dark">Ciemny</option>
+        <option value="midnight">Nocny (granatowy)</option>
+      </select>
+
+      <button type="submit">Zapisz konfigurację i uruchom system</button>
+    </form>
+    <p class="foot">ORIONOS DEVELOPMENT PREVIEW · v0.2</p>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "orionos.configuration.v1";
+
+    // Jeśli konfiguracja już istnieje, nie pokazuj kreatora ponownie.
+    if (localStorage.getItem(STORAGE_KEY)) {
+      window.location.replace("../index.html");
+    }
+
+    document.getElementById("setup-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const configuration = {
+        username: document.getElementById("username").value.trim(),
+        language: document.getElementById("language").value,
+        appearance: document.getElementById("appearance").value,
+        configuredAt: new Date().toISOString()
+      };
+
+      if (!configuration.username) return;
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(configuration));
+      window.location.replace("../index.html");
+    });
+  </script>
+</body>
+</html>
