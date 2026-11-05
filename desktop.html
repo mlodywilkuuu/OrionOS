@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080d1b"><title>OrionOS — Pulpit</title>
-<style>
-:root{--accent:#8795ff;--accent2:#bd8bff;--fg:#f4f6ff;--muted:#b8c2d8;--panel:#111a2ddd;--line:#ffffff24}
-*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Inter,"Segoe UI",system-ui,sans-serif;color:var(--fg);background:radial-gradient(ellipse at 18% 10%,#6478ff55,transparent 42%),radial-gradient(ellipse at 85% 85%,#a26bff45,transparent 42%),linear-gradient(135deg,#080d1b,#111b35 55%,#080d1b)}.top{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#080d1b88;backdrop-filter:blur(20px);font-size:12px}.brand{font-weight:800;letter-spacing:.12em}.tray{display:flex;gap:18px;color:#dce2f2}.workspace{height:calc(100% - 38px);padding:30px;position:relative}.desktop-icons{display:grid;grid-template-columns:repeat(1,88px);gap:20px;width:100px}.app{border:0;background:transparent;color:var(--fg);display:grid;justify-items:center;gap:8px;padding:8px;border-radius:12px;cursor:pointer;font:inherit;font-size:12px}.app:hover{background:#ffffff18}.glyph{width:54px;height:54px;border-radius:16px;background:linear-gradient(145deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:25px;box-shadow:0 10px 30px #0003}.dock{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:20px;background:#10182bd9;backdrop-filter:blur(24px);box-shadow:0 15px 50px #0005}.dock button{width:48px;height:48px;border:0;border-radius:13px;background:#ffffff0d;color:white;font-size:22px;cursor:pointer}.dock button:hover{background:#ffffff25;transform:translateY(-3px)}.window{display:none;position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 36px));min-height:260px;border:1px solid var(--line);border-radius:18px;background:#101a2cf2;box-shadow:0 30px 100px #0009;overflow:hidden}.window.open{display:block}.winhead{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;font-weight:700}.winbody{padding:24px;color:var(--muted);line-height:1.7}.close{border:0;background:#ffffff16;color:white;border-radius:8px;padding:3px 10px;cursor:pointer}.start{display:none;position:absolute;bottom:86px;left:50%;transform:translateX(-50%);width:min(360px,calc(100% - 28px));padding:18px;border:1px solid var(--line);border-radius:18px;background:#101a2cf5;backdrop-filter:blur(25px);box-shadow:0 20px 70px #0008}.start.open{display:block}.start h3{margin:0 0 14px}.startgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.startgrid button{border:0;border-radius:12px;background:#ffffff0c;color:white;padding:15px 5px;cursor:pointer}.startgrid button:hover{background:#ffffff20}.clock{font-variant-numeric:tabular-nums}
-</style></head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d1b">
+<title>OrionOS — Pulpit</title>
+<link rel="stylesheet" href="desktop/desktop.css">
+<script defer src="desktop/settings.js"></script>
+<script defer src="desktop/screen.js"></script>
+<script defer src="desktop/windows.js"></script>
+<script defer src="desktop/taskbar.js"></script>
+<script defer src="desktop/desktop.js"></script>
+</head>
 <body>
-<header class="top"><div class="brand">✦ ORIONOS</div><div class="tray"><span id="profile">Użytkownik</span><span id="clock" class="clock"></span><span>◈</span></div></header>
-<main class="workspace"><div class="desktop-icons">
-<button class="app" data-window="files"><span class="glyph">▰</span><span>Pliki</span></button>
-<button class="app" data-window="settings"><span class="glyph">⚙</span><span>Ustawienia</span></button>
-<button class="app" data-window="about"><span class="glyph">✦</span><span>O OrionOS</span></button>
-</div>
-<section class="window" id="files"><div class="winhead">Pliki <button class="close">×</button></div><div class="winbody">Menedżer plików OrionOS<br><br>Ten pulpit jest demonstracyjnym środowiskiem przeglądarkowym. Obsługa prawdziwych plików i aplikacji zostanie dodana w kolejnych etapach.</div></section>
-<section class="window" id="settings"><div class="winhead">Ustawienia <button class="close">×</button></div><div class="winbody">Twoje ustawienia OrionOS zostały zastosowane do tego podglądu pulpitu. Możesz wrócić do konfiguratora i je zmienić.</div></section>
-<section class="window" id="about"><div class="winhead">O OrionOS <button class="close">×</button></div><div class="winbody"><b>OrionOS Preview</b><br>Witaj na pulpicie OrionOS. To wczesny, demonstracyjny interfejs systemu, a nie jeszcze samodzielny system operacyjny.</div></section>
-<div class="start" id="start"><h3>✦ OrionOS</h3><div class="startgrid"><button data-open="files">▰<br>Pliki</button><button data-open="settings">⚙<br>Ustawienia</button><button data-open="about">✦<br>O systemie</button></div></div>
-<nav class="dock"><button id="launcher" title="Menu">✦</button><button data-open="files" title="Pliki">▰</button><button data-open="settings" title="Ustawienia">⚙</button><button data-open="about" title="O OrionOS">ⓘ</button></nav></main>
-<script>
-const c=JSON.parse(localStorage.getItem("orionos.configuration.v1")||"null");const i=JSON.parse(localStorage.getItem("orionos.installation.v1")||"null");if(!c)location.replace("configuration/");else if(!i?.complete)location.replace("install.html");else{
-document.documentElement.lang=c.language||"pl";document.getElementById("profile").textContent=c.username||"Użytkownik";
-const themes={dark:["#080d1b","#111a2d"],midnight:["#050a1a","#0b1228"],light:["#e9edf7","#f8faff"],ocean:["#061522","#0d2638"],forest:["#071711","#10251b"],rose:["#1a0c18","#2a1427"]};const th=themes[c.appearance]||themes.dark;if(c.appearance==="light"){document.body.style.background="linear-gradient(135deg,#dce4f5,#f8faff)";document.body.style.color="#18213a";document.querySelector(".top").style.background="#ffffff99";document.querySelector(".dock").style.background="#ffffffbb";document.querySelector(".dock").querySelectorAll("button").forEach(b=>b.style.color="#18213a")}const accents={violet:["#8795ff","#bd8bff"],blue:["#438bff","#77b5ff"],cyan:["#28b8c8","#73e0df"],sky:["#38a9e8","#8bd5ff"],indigo:["#5865dc","#9a8cff"],purple:["#9b65e8","#d0a0ff"],magenta:["#d64ab7","#f18acb"],pink:["#ee72aa","#ffb1ce"],red:["#e34e61","#ff8c91"],coral:["#ef7864","#ffb09a"],orange:["#ef923d","#ffc078"],amber:["#d6a326","#ffe080"],yellow:["#c3ad2e","#f4e879"],lime:["#8abf38","#c4e879"],green:["#3aa878","#8bd6a9"],emerald:["#20a887","#76ddc2"],teal:["#269f9b","#7ad5ca"],slate:["#8292a8","#b8c5d6"]};const ac=accents[c.accent]||accents.violet;document.documentElement.style.setProperty("--accent",ac[0]);document.documentElement.style.setProperty("--accent2",ac[1]);
-}
-function openWindow(id){document.querySelectorAll(".window").forEach(w=>w.classList.remove("open"));document.getElementById(id)?.classList.add("open");document.getElementById("start").classList.remove("open")}
-document.querySelectorAll("[data-window]").forEach(b=>b.addEventListener("click",()=>openWindow(b.dataset.window)));document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openWindow(b.dataset.open)));document.querySelectorAll(".close").forEach(b=>b.addEventListener("click",()=>b.closest(".window").classList.remove("open")));document.getElementById("launcher").addEventListener("click",()=>document.getElementById("start").classList.toggle("open"));function updateClock(){document.getElementById("clock").textContent=new Intl.DateTimeFormat(undefined,{hour:"2-digit",minute:"2-digit",weekday:"short",day:"numeric",month:"short",timeZone:JSON.parse(localStorage.getItem("orionos.configuration.v1")||"{}").timezone||undefined}).format(new Date())}updateClock();setInterval(updateClock,15000);
-</script></body></html>
+<div id="orion-desktop"></div>
+</body>
+</html>
