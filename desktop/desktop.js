@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded",()=>{
 const root=document.getElementById("orion-desktop");
 const screen=window.OrionScreen.render(root);
+screen.querySelectorAll(".desktop-icons,.desktop-app,.desktop-glyph,[data-window]").forEach(node=>node.remove());
 window.OrionWindows.render(screen.querySelector("#orion-windows"));
 window.OrionTaskbar.render(root);
-function openWindow(name){document.querySelectorAll(".app-window").forEach(w=>w.classList.remove("open"));document.getElementById("window-"+name)?.classList.add("open");document.getElementById("start-menu").classList.remove("open")}
+function openWindow(name){document.querySelectorAll(".app-window").forEach(w=>w.classList.remove("open"));document.getElementById("window-"+name)?.classList.add("open");document.getElementById("quick-panel")?.classList.remove("open")}
 
 
 document.querySelectorAll(".window-close").forEach(button=>button.addEventListener("click",()=>button.closest(".app-window").classList.remove("open")));
