@@ -17,6 +17,6 @@ const complexity=(config?.telemetry?2:0)+(config?.location?2:0)+(config?.persona
 const duration=record?.duration||Math.min(42000,Math.max(18000,18000+complexity*1800));
 const started=record?.startedAt||Date.now();localStorage.setItem(INSTALL,JSON.stringify({startedAt:started,duration}));
 const fill=document.getElementById("fill"),percent=document.getElementById("percent"),taskTitle=document.getElementById("taskTitle"),taskDesc=document.getElementById("taskDesc");
-function tick(){let progress=Math.min(1,(Date.now()-started)/duration),pct=Math.floor(progress*100);fill.style.width=pct+"%";percent.textContent=pct+"%";let i=Math.min(words.tasks.length-1,Math.floor(progress*words.tasks.length));taskTitle.textContent=words.tasks[i][0];taskDesc.textContent=words.tasks[i][1];if(progress>=1){localStorage.setItem(INSTALL,JSON.stringify({complete:true,completedAt:Date.now()}));location.replace("login.html");}}
+function tick(){let progress=Math.min(1,(Date.now()-started)/duration),pct=Math.floor(progress*100);fill.style.width=pct+"%";percent.textContent=pct+"%";let i=Math.min(words.tasks.length-1,Math.floor(progress*words.tasks.length));taskTitle.textContent=words.tasks[i][0];taskDesc.textContent=words.tasks[i][1];if(progress>=1){localStorage.setItem(INSTALL,JSON.stringify({complete:true,completedAt:Date.now()}));location.replace("desktop.html");}}
 tick();let timer=setInterval(()=>{tick();if(fill.style.width==="100%")clearInterval(timer)},180);
 </script></body></html>
