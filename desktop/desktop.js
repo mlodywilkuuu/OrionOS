@@ -56,9 +56,27 @@ document.addEventListener("keydown",e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.rep
 document.addEventListener("pointerdown",()=>{getAudio()},{once:true});
 notify("OrionOS","Centrum powiadomień jest gotowe. Dźwięk pisania jest włączony.");
 
-const showPower=(mode)=>{closeQuick();closeCalendar();closeMenu();powerScreen.dataset.mode=mode;powerScreen.classList.add("open");$("power-title").textContent=mode==="shutdown"?"OrionOS — wyłączanie":"OrionOS — ponowne uruchomienie";$("power-description").textContent=mode==="shutdown"?"Możesz zamknąć ekran systemu. Strona nie może wyłączyć fizycznego komputera.":"System OrionOS zostanie ponownie załadowany."; $("power-confirm").textContent=mode==="shutdown"?"Przejdź do ekranu wyłączenia":"Uruchom ponownie"};
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const setPowerStage=(mode,stage)=>{
+powerScreen.dataset.mode=mode;powerScreen.dataset.stage=stage;powerScreen.classList.add("open");
+const heading=$("power-title"),description=$("power-description"),actions=powerScreen.querySelector(".power-screen-actions");
+const spinner=powerScreen.querySelector(".power-spinner");
+if(spinner)spinner.hidden=stage==="off";
+if(stage==="shutdown"){heading.textContent="Zamykanie OrionOS";description.textContent="Zamykanie aplikacji i przygotowywanie systemu…";actions.hidden=true}
+if(stage==="restart"){heading.textContent="Ponowne uruchamianie";description.textContent="Zapisywanie ustawień i ponowne uruchamianie systemu…";actions.hidden=true}
+if(stage==="boot"){heading.textContent="OrionOS";description.textContent="Uruchamianie systemu…";actions.hidden=true}
+if(stage==="off"){heading.textContent="OrionOS został wyłączony";description.textContent="System został bezpiecznie zamknięty. Możesz ponownie uruchomić OrionOS.";actions.hidden=false;$("power-cancel").hidden=true;$("power-confirm").textContent="Uruchom OrionOS"}
+};
+const showPower=mode=>{closeQuick();closeCalendar();closeMenu();closeSound();notificationCenter.classList.remove("open");powerScreen.dataset.mode=mode;powerScreen.classList.add("open");powerScreen.querySelector(".power-screen-actions").hidden=false;$("power-cancel").hidden=false;$("power-cancel").textContent="Anuluj";$("power-confirm").textContent=mode==="shutdown"?"Wyłącz":"Uruchom ponownie";$("power-title").textContent=mode==="shutdown"?"Wyłączanie OrionOS?":"Uruchomić OrionOS ponownie?";$("power-description").textContent=mode==="shutdown"?"Po potwierdzeniu system wyświetli ekran zamykania.":"Po potwierdzeniu system uruchomi się ponownie.";const spinner=powerScreen.querySelector(".power-spinner");if(spinner)spinner.hidden=true;powerScreen.dataset.stage="confirm"};
+const bootAndReturn=async()=>{setPowerStage("boot","boot");await wait(1450+Math.floor(Math.random()*850));location.href=new URL("desktop.html",location.href).href};
 menu.querySelectorAll("[data-power]").forEach(button=>button.addEventListener("click",()=>showPower(button.dataset.power)));
-$("power-cancel").addEventListener("click",()=>powerScreen.classList.remove("open"));
-$("power-confirm").addEventListener("click",()=>{if(powerScreen.dataset.mode==="restart"){ $("power-description").textContent="Ponowne uruchamianie…";setTimeout(()=>location.reload(),650)}else{$("power-title").textContent="OrionOS jest wyłączony";$("power-description").textContent="To ekran symulujący wyłączenie. Odśwież stronę, aby wrócić do systemu.";$("power-confirm").textContent="Włącz OrionOS";$("power-confirm").onclick=()=>location.reload();$("power-cancel").textContent="Zamknij ekran";$("power-cancel").onclick=()=>powerScreen.classList.remove("open")}});
+$("power-cancel").addEventListener("click",()=>{powerScreen.classList.remove("open");$("power-cancel").hidden=false});
+$("power-confirm").addEventListener("click",async()=>{
+const mode=powerScreen.dataset.mode,stage=powerScreen.dataset.stage;
+if(stage==="off"){await bootAndReturn();return}
+if(stage!=="confirm")return;
+if(mode==="shutdown"){setPowerStage("shutdown","shutdown");await wait(1200+Math.floor(Math.random()*750));setPowerStage("shutdown","off");return}
+setPowerStage("restart","restart");await wait(1250+Math.floor(Math.random()*900));await bootAndReturn();
+});
 document.addEventListener("click",e=>{if(!quickPanel.contains(e.target)&&!quickToggle.contains(e.target))closeQuick();if(!calendarPanel.contains(e.target)&&!calendarToggle.contains(e.target))closeCalendar();if(!menu.contains(e.target)&&!logo.contains(e.target))closeMenu();if(!soundFlyout.contains(e.target)&&!quickPanel.contains(e.target)&&!e.target.closest("#sound-icon"))closeSound();if(!notificationCenter.contains(e.target)&&!notificationToggle.contains(e.target))notificationCenter.classList.remove("open")});
 });
