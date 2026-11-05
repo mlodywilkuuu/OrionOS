@@ -43,4 +43,4 @@ document.getElementById("calendar-today").title="Kliknij, aby wrócić do dzisie
 document.getElementById("calendar-today").style.cursor="pointer";
 const update=()=>{now=new Date();document.getElementById("system-clock").textContent=new Intl.DateTimeFormat(locale,{hour:"2-digit",minute:"2-digit"}).format(now);document.getElementById("system-date").textContent=new Intl.DateTimeFormat(locale,{day:"2-digit",month:"2-digit",year:"numeric"}).format(now);drawCalendar()};
 update();setInterval(update,15000);
-};
+}};
