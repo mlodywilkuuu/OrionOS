@@ -1,0 +1,5 @@
+window.OrionWindows={
+render(host){
+host.innerHTML='<section class="app-window" id="window-files"><div class="window-head">Pliki <button class="window-close" aria-label="Zamknij">×</button></div><div class="window-body">Menedżer plików OrionOS<br><br>To demonstracyjny interfejs. Obsługa prawdziwych plików zostanie dodana w kolejnym etapie.</div></section><section class="app-window" id="window-settings"><div class="window-head">Ustawienia <button class="window-close" aria-label="Zamknij">×</button></div><div class="window-body">Ustawienia wybrane w konfiguratorze zostały zastosowane do pulpitu. Możesz wrócić do konfiguratora, aby je zmienić.</div></section><section class="app-window" id="window-about"><div class="window-head">O OrionOS <button class="window-close" aria-label="Zamknij">×</button></div><div class="window-body"><b>OrionOS Preview</b><br>Witaj na pulpicie OrionOS. To wczesny podgląd środowiska graficznego działający w przeglądarce.</div></section>';
+}
+};
