@@ -106,3 +106,20 @@ body[data-theme="light"] .sound-flyout,body[data-theme="light"] .notification-ce
 body[data-theme="light"] .app-search{background:#ffffffc9;color:#18213a}
 body[data-theme="light"] .app-search-results{background:#f8fafffa}
 @media(max-width:600px){.system-bar{height:54px;min-height:54px;padding:0 8px}.taskbar-left{gap:7px}.orion-logo{width:34px;height:34px;flex:none}.app-search-wrap{width:min(220px,46vw);min-width:110px}.app-search{height:35px;font-size:11px;padding-left:33px}.app-search-icon{left:10px;top:6px}.system-tray{gap:4px}.system-clock-wrap{min-width:76px}}
+
+/* Taskbar pinned to the viewport and working file recycle bin */
+#orion-desktop{position:relative;min-height:100%;isolation:isolate}
+.system-bar{position:fixed!important;inset:auto 0 0 0!important;width:100vw!important;height:56px!important;min-height:56px!important;display:flex!important;visibility:visible!important;opacity:1!important;z-index:99999!important;transform:none!important}
+.app-window{z-index:20}
+.file-toolbar,.trash-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 0}
+.file-pick,.file-open-trash,.trash-toolbar button,.file-row button{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:9px;padding:9px 12px;background:#ffffff12;color:var(--fg);font:inherit;font-size:11px;cursor:pointer}
+.file-pick{background:var(--accent);color:#101426;font-weight:700;border-color:transparent}
+.file-list,.trash-list{display:grid;gap:8px;max-height:270px;overflow:auto}
+.file-row{display:flex;align-items:center;gap:10px;padding:9px;border:1px solid var(--line);border-radius:10px;background:#ffffff08;font-size:12px}
+.file-name{flex:1;min-width:0;overflow-wrap:anywhere}
+.file-row button{padding:7px 9px;white-space:nowrap}
+.file-empty{padding:20px 10px;text-align:center;color:var(--muted);font-size:12px}
+.trash-toolbar span{font-size:11px;color:var(--muted)}
+.trash-toolbar button:disabled{opacity:.4;cursor:not-allowed}
+body[data-theme="light"] .file-pick{color:#101426}
+@media(max-width:600px){.file-row{flex-wrap:wrap}.file-name{min-width:calc(100% - 42px)}.file-row button{font-size:10px;padding:7px}}
