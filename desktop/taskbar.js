@@ -15,14 +15,32 @@ const toast=document.createElement("div");toast.className="orion-toast";toast.id
 const calendar=document.createElement("section");calendar.className="calendar-panel";calendar.id="calendar-panel";calendar.setAttribute("aria-label","Kalendarz");
 calendar.innerHTML='<div class="calendar-head"><strong id="calendar-month"></strong><div><button id="calendar-prev" aria-label="Poprzedni miesiąc">‹</button><button id="calendar-next" aria-label="Następny miesiąc">›</button></div></div><div class="calendar-weekdays"></div><div class="calendar-days" id="calendar-days"></div><div class="calendar-today" id="calendar-today"></div>';
 root.appendChild(calendar);
-const powerScreen=document.createElement("section");powerScreen.className="power-screen";powerScreen.id="power-screen";powerScreen.innerHTML='<div class="power-orb">◈</div><h1 id="power-title">OrionOS</h1><p id="power-description">System jest gotowy.</p><div class="power-screen-actions"><button id="power-cancel">Anuluj</button><button id="power-confirm">Kontynuuj</button></div>';root.appendChild(powerScreen);
-let now=new Date(),shown=new Date(now.getFullYear(),now.getMonth(),1);
-const locale=system.locale||"pl-PL";
-const update=()=>{const d=new Date();document.getElementById("system-clock").textContent=new Intl.DateTimeFormat(locale,{hour:"2-digit",minute:"2-digit"}).format(d);document.getElementById("system-date").textContent=new Intl.DateTimeFormat(locale,{day:"2-digit",month:"2-digit",year:"numeric"}).format(d)};
+const powerScreen=document.createElement("section");powerScreen.className="power-screen";powerScreen.id="power-screen";powerScreen.innerHTML='<div class="power-spinner" hidden aria-hidden="true"></div><div class="power-orb">◈</div><h1 id="power-title">OrionOS</h1><p id="power-description">System jest gotowy.</p><div class="power-screen-actions"><button id="power-cancel">Anuluj</button><button id="power-confirm">Kontynuuj</button></div>';root.appendChild(powerScreen);
+let now=new Date(),shown=new Date(now.getFullYear(),now.getMonth(),1),selected=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+const locale=system.locale||"pl-PL",minMonth=0,maxMonth=2100*12+11;
+const monthIndex=date=>date.getFullYear()*12+date.getMonth();
 const weekdays=Array.from({length:7},(_,i)=>new Intl.DateTimeFormat(locale,{weekday:"short"}).format(new Date(2024,0,1+i)));
 calendar.querySelector(".calendar-weekdays").innerHTML=weekdays.map(x=>'<span>'+x+'</span>').join("");
-const drawCalendar=()=>{const y=shown.getFullYear(),m=shown.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,count=new Date(y,m+1,0).getDate();document.getElementById("calendar-month").textContent=new Intl.DateTimeFormat(locale,{month:"long",year:"numeric"}).format(shown);const cells=Array(first).fill('<span class="calendar-empty"></span>');for(let day=1;day<=count;day++){const today=day===now.getDate()&&m===now.getMonth()&&y===now.getFullYear();cells.push('<button class="calendar-day'+(today?' today':'')+'" '+(today?'aria-current="date"':'')+'>'+day+'</button>')}document.getElementById("calendar-days").innerHTML=cells.join("");document.getElementById("calendar-today").textContent="Dzisiaj: "+new Intl.DateTimeFormat(locale,{dateStyle:"full"}).format(now)};
-update();drawCalendar();setInterval(()=>{now=new Date();update();drawCalendar()},15000);
-document.getElementById("calendar-prev").addEventListener("click",()=>{shown.setMonth(shown.getMonth()-1);drawCalendar()});document.getElementById("calendar-next").addEventListener("click",()=>{shown.setMonth(shown.getMonth()+1);drawCalendar()});
+const drawCalendar=()=>{
+const y=shown.getFullYear(),m=shown.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,count=new Date(y,m+1,0).getDate();
+document.getElementById("calendar-month").textContent=new Intl.DateTimeFormat(locale,{month:"long",year:"numeric"}).format(shown);
+const cells=[];
+for(let i=0;i<42;i++){const day=i-first+1;if(day<1||day>count){cells.push('<span class="calendar-empty" aria-hidden="true"></span>');continue}
+const today=day===now.getDate()&&m===now.getMonth()&&y===now.getFullYear(),chosen=day===selected.getDate()&&m===selected.getMonth()&&y===selected.getFullYear();
+cells.push('<button type="button" class="calendar-day'+(today?' today':'')+(chosen?' selected':'')+'" data-day="'+day+'"'+(today?' aria-current="date"':'')+(chosen?' aria-pressed="true"':'')+'>'+day+'</button>');
 }
+document.getElementById("calendar-days").innerHTML=cells.join("");
+document.getElementById("calendar-prev").disabled=monthIndex(shown)<=minMonth;
+document.getElementById("calendar-next").disabled=monthIndex(shown)>=maxMonth;
+document.getElementById("calendar-today").textContent="Wybrano: "+new Intl.DateTimeFormat(locale,{dateStyle:"full"}).format(selected);
+};
+const moveMonth=delta=>{const next=monthIndex(shown)+delta;if(next<minMonth||next>maxMonth)return;shown=new Date(Math.floor(next/12),next%12,1);drawCalendar()};
+document.getElementById("calendar-prev").addEventListener("click",()=>moveMonth(-1));
+document.getElementById("calendar-next").addEventListener("click",()=>moveMonth(1));
+document.getElementById("calendar-days").addEventListener("click",event=>{const button=event.target.closest("[data-day]");if(!button)return;selected=new Date(shown.getFullYear(),shown.getMonth(),Number(button.dataset.day));drawCalendar()});
+document.getElementById("calendar-today").addEventListener("click",()=>{selected=new Date(now.getFullYear(),now.getMonth(),now.getDate());shown=new Date(now.getFullYear(),now.getMonth(),1);drawCalendar()});
+document.getElementById("calendar-today").title="Kliknij, aby wrócić do dzisiejszej daty";
+document.getElementById("calendar-today").style.cursor="pointer";
+const update=()=>{now=new Date();document.getElementById("system-clock").textContent=new Intl.DateTimeFormat(locale,{hour:"2-digit",minute:"2-digit"}).format(now);document.getElementById("system-date").textContent=new Intl.DateTimeFormat(locale,{day:"2-digit",month:"2-digit",year:"numeric"}).format(now);drawCalendar()};
+update();setInterval(update,15000);
 };
