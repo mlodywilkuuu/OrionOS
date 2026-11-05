@@ -85,3 +85,24 @@ body[data-theme="light"] .sound-flyout,body[data-theme="light"] .notification-ce
 .power-spinner[hidden]{display:none}
 @keyframes orion-spin{to{transform:rotate(360deg)}}
 .power-screen-actions[hidden]{display:none}
+
+
+/* Keep the taskbar visible and add a functional app launcher search */
+.system-bar{position:fixed!important;display:flex!important;visibility:visible!important;opacity:1!important;left:0;right:0;bottom:0;top:auto;height:56px;min-height:56px;padding:0 18px;z-index:5000;justify-content:space-between;pointer-events:auto}
+.taskbar-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.app-search-wrap{position:relative;width:min(310px,42vw);min-width:150px}
+.app-search{display:block;width:100%;height:38px;padding:0 14px 0 38px;border:1px solid var(--line);border-radius:11px;background:#ffffff12;color:var(--fg);font:inherit;font-size:12px;outline:none;transition:border-color .15s,background .15s,box-shadow .15s}
+.app-search::placeholder{color:var(--muted)}
+.app-search:focus{border-color:var(--accent);background:#ffffff19;box-shadow:0 0 0 3px #8795ff22}
+.app-search-icon{position:absolute;z-index:1;left:13px;top:7px;font-size:21px;line-height:22px;color:var(--muted);pointer-events:none}
+.app-search-results{position:absolute;left:0;bottom:calc(100% + 12px);width:min(360px,calc(100vw - 24px));max-height:min(55vh,380px);overflow:auto;padding:8px;border:1px solid var(--line);border-radius:14px;background:#101a2cf7;backdrop-filter:blur(26px);box-shadow:0 18px 55px #000a;z-index:5100}
+.app-search-results[hidden]{display:none}
+.app-search-result{width:100%;display:flex;align-items:center;gap:11px;padding:10px;border:0;border-radius:9px;background:transparent;color:var(--fg);text-align:left;cursor:pointer;font:inherit}
+.app-search-result:hover,.app-search-result:focus{outline:none;background:#ffffff18}
+.app-search-result-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:#8795ff26;font-size:18px}
+.app-search-result-copy{flex:1}.app-search-result-copy b,.app-search-result-copy small{display:block}.app-search-result-copy b{font-size:12px}.app-search-result-copy small{margin-top:3px;font-size:10px;color:var(--muted)}
+.app-search-enter{color:var(--muted);font-size:15px}
+.app-search-empty{padding:18px 12px;text-align:center;font-size:12px;color:var(--muted)}
+body[data-theme="light"] .app-search{background:#ffffffc9;color:#18213a}
+body[data-theme="light"] .app-search-results{background:#f8fafffa}
+@media(max-width:600px){.system-bar{height:54px;min-height:54px;padding:0 8px}.taskbar-left{gap:7px}.orion-logo{width:34px;height:34px;flex:none}.app-search-wrap{width:min(220px,46vw);min-width:110px}.app-search{height:35px;font-size:11px;padding-left:33px}.app-search-icon{left:10px;top:6px}.system-tray{gap:4px}.system-clock-wrap{min-width:76px}}
