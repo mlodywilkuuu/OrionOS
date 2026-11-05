@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded",()=>{
+const $=id=>document.getElementById(id);
 const root=document.getElementById("orion-desktop");
 const screen=window.OrionScreen.render(root);
 screen.querySelectorAll(".desktop-icons,.desktop-app,.desktop-glyph,[data-window]").forEach(node=>node.remove());
@@ -16,18 +17,18 @@ const renderTrash=()=>{const list=$("trash-list"),count=$("trash-count"),empty=$
 const addToFiles=file=>{const reader=new FileReader();reader.onload=()=>{const items=readTrash();items.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),name:file.name,type:file.type||"application/octet-stream",data:reader.result,location:"files",size:file.size});localStorage.setItem(TRASH_KEY,JSON.stringify(items));renderFiles()};reader.readAsDataURL(file)};
 const fileHost=$("window-files");
 fileHost.addEventListener("change",e=>{if(e.target.id==="file-import"){Array.from(e.target.files||[]).forEach(addToFiles);e.target.value=""}});
-fileHost.addEventListener("click",e=>{const del=e.target.closest("[data-trash-id]");if(del){const items=readTrash(),item=items.find(x=>x.id===del.dataset.trashId);if(item){item.location="trash";writeTrash(items);renderFiles()}}if(e.target.closest("[data-open-trash]"))openApp("window-trash")});
+fileHost.addEventListener("click",e=>{if(e.target.closest("[data-open-trash]"))openApp("window-trash")});
 $("window-trash").addEventListener("click",e=>{const restore=e.target.closest("[data-restore-id]"),remove=e.target.closest("[data-delete-id]");if(restore){const items=readTrash(),item=items.find(x=>x.id===restore.dataset.restoreId);if(item){item.location="files";writeTrash(items);renderFiles()}}if(remove){writeTrash(readTrash().filter(x=>x.id!==remove.dataset.deleteId))}});
 $("trash-empty").addEventListener("click",()=>{if(confirm("Usunąć wszystkie elementy z Kosza na stałe?")){writeTrash(readTrash().filter(x=>x.location!=="trash"))}});
 renderFiles();renderTrash();
 const openApp=id=>{const win=document.getElementById(id);if(!win)return;document.querySelectorAll(".app-window").forEach(w=>w.classList.remove("open"));win.classList.add("open");searchResults.hidden=true;searchInput.setAttribute("aria-expanded","false");searchInput.value="";};
+window.OrionFileSystem?.init({openApp});
 const renderSearch=()=>{const query=searchInput.value.trim().toLocaleLowerCase("pl");const matches=query?apps.filter(app=>(app.name+" "+app.keywords).toLocaleLowerCase("pl").includes(query)):apps;searchResults.innerHTML="";matches.forEach(app=>{const button=document.createElement("button");button.type="button";button.className="app-search-result";button.setAttribute("role","option");button.innerHTML='<span class="app-search-result-icon"></span><span class="app-search-result-copy"><b></b><small>Aplikacja</small></span><span class="app-search-enter">↵</span>';button.querySelector(".app-search-result-icon").textContent=app.icon;button.querySelector("b").textContent=app.name;button.addEventListener("click",()=>openApp(app.id));searchResults.appendChild(button)});if(!matches.length){const empty=document.createElement("div");empty.className="app-search-empty";empty.textContent="Nie znaleziono aplikacji";searchResults.appendChild(empty)}searchResults.hidden=false;searchInput.setAttribute("aria-expanded","true")};
 searchInput.addEventListener("focus",renderSearch);searchInput.addEventListener("input",renderSearch);
 searchInput.addEventListener("keydown",event=>{if(event.key==="Escape"){searchResults.hidden=true;searchInput.setAttribute("aria-expanded","false");searchInput.blur()}if(event.key==="Enter"){const first=searchResults.querySelector(".app-search-result");if(first)first.click()}if(event.key==="ArrowDown"){event.preventDefault();searchResults.querySelector(".app-search-result")?.focus()}});
 searchResults.addEventListener("keydown",event=>{if(event.key==="Escape"){searchResults.hidden=true;searchInput.setAttribute("aria-expanded","false");searchInput.focus()}});
 document.addEventListener("pointerdown",event=>{if(!event.target.closest(".app-search-wrap")){searchResults.hidden=true;searchInput.setAttribute("aria-expanded","false")}});
 
-const $=id=>document.getElementById(id);
 const quickToggle=$("quick-toggle"),quickPanel=$("quick-panel"),calendarToggle=$("calendar-toggle"),calendarPanel=$("calendar-panel"),logo=$("orion-logo"),menu=$("orion-menu"),powerScreen=$("power-screen");
 const title=$("quick-title"),back=quickPanel.querySelector(".quick-back"),home=quickPanel.querySelector(".quick-home"),sub=$("quick-subview");
 const closeQuick=()=>{quickPanel.classList.remove("open");quickToggle.setAttribute("aria-expanded","false");home.hidden=false;sub.hidden=true;back.hidden=true;title.textContent="Szybkie ustawienia"};
