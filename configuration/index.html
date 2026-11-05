@@ -137,7 +137,7 @@ options:{repeatRate:["Wolna","Normalna","Szybka"],cursorSize:["Mały","Normalny"
 };
 document.querySelector(".password-heading b").textContent=copy.passwordHeading[0];
 document.querySelector(".password-heading small").textContent=copy.passwordHeading[1];
-["password","passwordConfirm"].forEach((id,i)=>{const el=document.getElementById(id);el.placeholder=copy.passwordPlaceholders[i];el.previousElementSibling.textContent=copy.passwordLabels[i];});
+["password","passwordConfirm"].forEach((id,i)=>{const el=document.getElementById(id);el.placeholder=copy.passwordPlaceholders[i];el.parentElement.parentElement.querySelector("label").textContent=copy.passwordLabels[i];});
 document.querySelector(".password-footnote").lastChild.textContent=" "+copy.passwordFoot;
 document.getElementById("username").placeholder=copy.usernamePlaceholder;
 document.getElementById("device").placeholder=copy.devicePlaceholder;
