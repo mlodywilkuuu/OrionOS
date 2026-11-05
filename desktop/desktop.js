@@ -7,7 +7,7 @@ window.OrionWindows.render(screen.querySelector("#orion-windows"));
 window.OrionTaskbar.render(root);
 document.querySelectorAll(".window-close").forEach(button=>button.addEventListener("click",()=>button.closest(".app-window").classList.remove("open")));
 const searchInput=document.getElementById("app-search"),searchResults=document.getElementById("app-search-results");
-const apps=[{id:"window-files",name:"Pliki",keywords:"files menedżer plików foldery dokumenty",icon:"▤"},{id:"window-settings",name:"Ustawienia",keywords:"settings konfiguracja system",icon:"⚙"},{id:"window-about",name:"O OrionOS",keywords:"about informacje wersja system",icon:"◈"},{id:"window-trash",name:"Kosz",keywords:"trash recycle bin usunięte przywróć pliki",icon:"▣"}];
+const apps=[{id:"window-files",name:"Pliki",keywords:"files menedżer plików foldery dokumenty",icon:"▤"},{id:"window-settings",name:"Ustawienia",keywords:"settings konfiguracja system",icon:"⚙"},{id:"window-about",name:"O OrionOS",keywords:"about informacje wersja system",icon:"◈"},{id:"window-trash",name:"Kosz",keywords:"trash recycle bin usunięte przywróć pliki",icon:"▣"},{id:"window-browser",name:"Orion Browser",keywords:"internet www strony przeglądarka browser",icon:"🌐"},{id:"window-store",name:"Centrum aplikacji",keywords:"steam discord spotify instaluj pobierz sklep apps",icon:"🛍"}];
 const TRASH_KEY="orionos.recyclebin.v1";
 const readTrash=()=>{try{return JSON.parse(localStorage.getItem(TRASH_KEY)||"[]")}catch(e){return[]}};
 const writeTrash=items=>{localStorage.setItem(TRASH_KEY,JSON.stringify(items));renderTrash()};
