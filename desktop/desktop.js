@@ -54,6 +54,7 @@ notificationToggle.addEventListener("click",e=>{e.stopPropagation();closeQuick()
 $("clear-notifications").addEventListener("click",()=>{notificationList.innerHTML='<div class="notification-empty">Nie masz nowych powiadomień</div>'});
 document.addEventListener("keydown",e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;if(e.key.length!==1)return;const target=e.target;if(target&&(/INPUT|TEXTAREA|SELECT/.test(target.tagName)||target.isContentEditable)&&!$("typing-sound").checked)return;if(!$("typing-sound").checked)return;tone(420+Math.random()*180,.025,"triangle")});
 document.addEventListener("pointerdown",()=>{getAudio()},{once:true});
+notify("OrionOS","Centrum powiadomień jest gotowe. Dźwięk pisania jest włączony.");
 
 const showPower=(mode)=>{closeQuick();closeCalendar();closeMenu();powerScreen.dataset.mode=mode;powerScreen.classList.add("open");$("power-title").textContent=mode==="shutdown"?"OrionOS — wyłączanie":"OrionOS — ponowne uruchomienie";$("power-description").textContent=mode==="shutdown"?"Możesz zamknąć ekran systemu. Strona nie może wyłączyć fizycznego komputera.":"System OrionOS zostanie ponownie załadowany."; $("power-confirm").textContent=mode==="shutdown"?"Przejdź do ekranu wyłączenia":"Uruchom ponownie"};
 menu.querySelectorAll("[data-power]").forEach(button=>button.addEventListener("click",()=>showPower(button.dataset.power)));
