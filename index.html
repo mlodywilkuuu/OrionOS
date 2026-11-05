@@ -9,7 +9,7 @@
 const KEY="orionos.configuration.v1",INSTALL="orionos.installation.v1";
 const params=new URLSearchParams(location.search);
 if(params.get("format")==="1"){localStorage.removeItem(KEY);localStorage.removeItem(INSTALL);location.replace("configuration/");}
-else{let config=localStorage.getItem(KEY),installed=localStorage.getItem(INSTALL);if(!config)location.replace("configuration/");else{try{if(!JSON.parse(installed||"null")?.complete)location.replace("install.html");}catch(e){location.replace("install.html");}}}
+else{let config=localStorage.getItem(KEY),installed=localStorage.getItem(INSTALL);if(!config)location.replace("configuration/");else{try{if(!JSON.parse(installed||"null")?.complete)location.replace("install.html");}catch(e){location.replace("install.html");}}else{location.replace("login.html");}}
 </script></head>
 <body><main class="boot"><h1 class="logo">ORIONOS</h1><p class="sub">OPERATING SYSTEM</p><p class="hello" id="hello"></p></main><footer class="version">Development Preview | v0.4</footer>
 <script>
