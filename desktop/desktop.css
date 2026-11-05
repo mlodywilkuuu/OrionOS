@@ -184,3 +184,38 @@ body[data-theme="light"] .file-pick{color:#101426}
 .app-window.window-maximized{position:fixed!important;inset:8px 8px 58px!important;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;min-width:0!important;min-height:0!important;z-index:120!important;border-radius:16px!important}
 .app-window.window-maximized .window-body{height:auto!important;max-height:none!important;flex:1;min-height:0;overflow:auto;scrollbar-width:none}.app-window.window-maximized .window-body::-webkit-scrollbar{display:none}
 @media(max-width:650px){.fs-grid{grid-template-columns:repeat(auto-fill,minmax(95px,1fr));gap:8px}.fs-item-card{min-height:124px}.fs-drag-hint{display:none}.app-window.window-maximized{inset:4px 4px 58px!important}}
+
+/* Desktop window controls and cleaner Windows-like chrome */
+#orion-windows{position:absolute;inset:0 0 56px;pointer-events:none;z-index:20}
+#orion-windows .app-window{pointer-events:auto;left:50%;top:48%;transform:translate(-50%,-50%);min-width:min(340px,calc(100vw - 20px));max-width:calc(100vw - 16px);max-height:calc(100vh - 76px);display:none;flex-direction:column;border:1px solid #ffffff1c;border-radius:9px;background:#171b24;box-shadow:0 16px 48px #0008;overflow:hidden}
+#orion-windows .app-window.open{display:flex}
+#orion-windows .window-head{height:42px;min-height:42px;padding:0 8px 0 14px;display:flex;align-items:center;gap:12px;border:0;background:#202632;color:#f4f6fb;font-size:13px;cursor:grab;user-select:none}
+#orion-windows .window-head:active{cursor:grabbing}
+#orion-windows .window-controls{display:flex;align-items:center;gap:2px;margin-left:auto}
+#orion-windows .window-controls button{width:42px;height:32px;border:0;border-radius:0;background:transparent;color:inherit;font:16px "Segoe UI",sans-serif;cursor:pointer}
+#orion-windows .window-controls .window-close{font-size:19px}
+#orion-windows .window-controls button:hover{background:#ffffff20}
+#orion-windows .window-controls .window-close:hover{background:#e81123;color:white}
+#orion-windows .window-body{padding:18px;overflow:auto;min-height:0;max-height:calc(100vh - 130px);scrollbar-width:none}
+#orion-windows .window-body::-webkit-scrollbar{display:none}
+#orion-windows .app-window.window-maximized{position:fixed!important;inset:6px 6px 62px!important;left:6px!important;top:6px!important;transform:none!important;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;border-radius:8px!important}
+#orion-windows .app-window.window-maximized .window-body{max-height:none!important}
+#orion-windows .app-window.explorer-window{width:min(760px,calc(100vw - 28px));height:min(560px,calc(100vh - 100px))}
+.explorer-toolbar{display:flex;align-items:center;gap:12px;padding:0 0 14px;color:var(--muted);font-size:11px}
+.explorer-toolbar button{border:0;border-radius:5px;padding:7px 11px;background:#ffffff12;color:var(--fg);cursor:pointer}
+.explorer-window .fs-item-card{border:1px solid transparent;border-radius:5px;background:transparent;min-height:112px}
+.explorer-window .fs-item-card:hover{border-color:#ffffff22;background:#ffffff0c;transform:none}
+.explorer-window .fs-item-actions{opacity:0}
+.explorer-window .fs-item-card:hover .fs-item-actions{opacity:1}
+.desktop-system-item{user-select:none}
+.desktop-system-item .desktop-name{pointer-events:none}
+.app-search{padding-right:40px}
+.app-search-clear{z-index:2;display:grid;place-items:center}
+.app-search-clear[hidden]{display:none}
+.file-row,.fs-item-card,.computer-hero,.computer-stats>div,.fs-empty-state,.fs-editor,.property-row,.file-pick,.file-open-trash,.trash-toolbar button,.fs-actions button,.fs-primary,.fs-breadcrumb button,.file-row button,.fs-item-actions button{border-radius:5px!important;box-shadow:none!important}
+.fs-item-card{border-color:transparent!important;background:transparent!important}
+.fs-item-card:hover{background:#ffffff0c!important;border-color:#ffffff1a!important}
+.fs-empty-state{border:0!important}
+.file-row{border:0!important;border-bottom:1px solid #ffffff12!important;background:transparent!important}
+.file-pick,.file-open-trash,.trash-toolbar button,.fs-actions button,.fs-primary,.fs-breadcrumb button,.file-row button,.fs-item-actions button{border:0!important}
+@media(max-width:650px){#orion-windows .app-window{min-width:0;width:calc(100vw - 16px)}#orion-windows .window-controls button{width:34px}}
