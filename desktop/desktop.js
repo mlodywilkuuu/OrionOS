@@ -68,7 +68,7 @@ if(stage==="boot"){heading.textContent="OrionOS";description.textContent="Urucha
 if(stage==="off"){heading.textContent="OrionOS został wyłączony";description.textContent="System został bezpiecznie zamknięty. Możesz ponownie uruchomić OrionOS.";actions.hidden=false;$("power-cancel").hidden=true;$("power-confirm").textContent="Uruchom OrionOS"}
 };
 const showPower=mode=>{closeQuick();closeCalendar();closeMenu();closeSound();notificationCenter.classList.remove("open");powerScreen.dataset.mode=mode;powerScreen.classList.add("open");powerScreen.querySelector(".power-screen-actions").hidden=false;$("power-cancel").hidden=false;$("power-cancel").textContent="Anuluj";$("power-confirm").textContent=mode==="shutdown"?"Wyłącz":"Uruchom ponownie";$("power-title").textContent=mode==="shutdown"?"Wyłączanie OrionOS?":"Uruchomić OrionOS ponownie?";$("power-description").textContent=mode==="shutdown"?"Po potwierdzeniu system wyświetli ekran zamykania.":"Po potwierdzeniu system uruchomi się ponownie.";const spinner=powerScreen.querySelector(".power-spinner");if(spinner)spinner.hidden=true;powerScreen.dataset.stage="confirm"};
-const bootAndReturn=async()=>{setPowerStage("boot","boot");await wait(1450+Math.floor(Math.random()*850));location.href=new URL("desktop.html",location.href).href};
+const bootAndReturn=async()=>{setPowerStage("boot","boot");await wait(1450+Math.floor(Math.random()*850));location.reload()};
 menu.querySelectorAll("[data-power]").forEach(button=>button.addEventListener("click",()=>showPower(button.dataset.power)));
 $("power-cancel").addEventListener("click",()=>{powerScreen.classList.remove("open");$("power-cancel").hidden=false});
 $("power-confirm").addEventListener("click",async()=>{
