@@ -124,7 +124,14 @@ welcome:"Nastavte OrionOS",welcomeDesc:"Pro přípravu systému projděte někol
 }
 });
 
-function t(k){return (translations[language]&&translations[language][k])||translations.en[k]||translations.pl[k]||k}
+Object.assign(translations.pl,{
+passwordTitle:"Bezpieczeństwo profilu",passwordDesc:"Utwórz hasło chroniące Twój profil OrionOS",passwordLabel:"Hasło",passwordConfirm:"Powtórz hasło",passwordPlaceholder:"Wpisz bezpieczne hasło",passwordConfirmPlaceholder:"Wpisz hasło ponownie",passwordFoot:"Hasło jest zapisywane lokalnie jako bezpieczny skrót, a nie zwykły tekst.",show:"Pokaż",hide:"Ukryj",strengthEmpty:"Wpisz hasło, aby sprawdzić jego siłę",strengthWeak:"Słabe hasło — dodaj długość i różne znaki",strengthMedium:"Średnie hasło",strengthStrong:"Silne hasło",matchGood:"Hasła są zgodne",matchBad:"Hasła nie są identyczne",usernamePlaceholder:"np. Orion",devicePlaceholder:"np. Orion-PC",steps:["Start","Język","Klawiatura","Profil","Wygląd","Prywatność","Gotowe"],sideTitle:"Pierwsze uruchomienie",stepPrefix:"KROK",stepOf:"Z 7",summaryLabels:["Użytkownik","Urządzenie","Język","Strefa czasowa","Klawiatura","Motyw","Akcent","Skala interfejsu","Format daty"],repeatOptions:["Wolna","Normalna","Szybka"],cursorOptions:["Mały","Normalny","Duży"],dateOptions:["Automatyczny","DD.MM.RRRR","MM/DD/RRRR","RRRR-MM-DD"],accentOptions:["Fioletowy","Niebieski","Turkusowy","Błękitny","Indygo","Purpurowy","Magenta","Różowy","Czerwony","Koralowy","Pomarańczowy","Bursztynowy","Żółty","Limonkowy","Zielony","Szmaragdowy","Morski","Łupkowy"]
+});
+Object.assign(translations.en,{
+passwordTitle:"Profile security",passwordDesc:"Create a password to protect your OrionOS profile",passwordLabel:"Password",passwordConfirm:"Confirm password",passwordPlaceholder:"Enter a secure password",passwordConfirmPlaceholder:"Enter the password again",passwordFoot:"Your password is stored locally as a secure hash, not as plain text.",show:"Show",hide:"Hide",strengthEmpty:"Enter a password to check its strength",strengthWeak:"Weak password — add length and variety",strengthMedium:"Medium password",strengthStrong:"Strong password",matchGood:"Passwords match",matchBad:"Passwords do not match",usernamePlaceholder:"e.g. Orion",devicePlaceholder:"e.g. Orion-PC",steps:["Start","Language","Keyboard","Profile","Appearance","Privacy","Ready"],sideTitle:"First setup",stepPrefix:"STEP",stepOf:"OF 7",summaryLabels:["User","Device","Language","Time zone","Keyboard","Theme","Accent","Interface scale","Date format"],repeatOptions:["Slow","Normal","Fast"],cursorOptions:["Small","Normal","Large"],dateOptions:["Automatic","DD.MM.YYYY","MM/DD/YYYY","YYYY-MM-DD"],accentOptions:["Violet","Blue","Turquoise","Sky blue","Indigo","Purple","Magenta","Pink","Red","Coral","Orange","Amber","Yellow","Lime","Green","Emerald","Teal","Slate"]
+});
+
+function t(k){return (translations[language]&&translations[language][k])||(language==="en"?translations.en[k]:translations.pl[k])||translations.pl[k]||k}
 function applyLanguage(){
 const tr=translations[language]||translations.pl,base=translations.pl;
 document.documentElement.lang=language;
